@@ -1,33 +1,26 @@
-var path = require('path');
-var winston = require('winston');
 var _ = require('lodash');
 var request = require('request');
 var mout = require('mout');
 
-var helper = require( path.join(global.paths.lib, 'helper.js') );
-var tasklib = require( path.join(global.paths.lib, 'tasklib.js') );
-var cli = require( path.join(global.paths.lib, 'cli.js') );
-var scraping = require( path.join(global.paths.lib, 'scraping.js') );
 
-var debug = require('debug')('cause:block:'+path.basename(__filename));
-
-
-function fn(task, step, input, prev_step) {
+function fn(task, step, input, prev_step, done) {
 	// expects no input
+
+	var cause = this;
 
 	var req_opts = _.defaults(
 		{
 			url: 'https://api.bitcoinaverage.com/exchanges/EUR',
 			json: true
 		},
-		scraping.request_defaults()
+		cause.utils.scraping.request_defaults()
 	);
 	request(req_opts, function(err, res, body) {
-		if (err) { return helper.handle_error(err); }
+		if (err) { return cause.handle_error(err); }
 
 		if (res.statusCode != 200) {
-			debug('status code: '+res.statusCode, task.name);
-			debug(req_opts.url);
+			cause.debug('status code: '+res.statusCode, task.name);
+			cause.debug(req_opts.url);
 			return;
 		}
 
@@ -35,21 +28,19 @@ function fn(task, step, input, prev_step) {
 		var price = mout.object.get(market, 'rates.last');
 		if (!price) {
 			var message = "couldn't retrieve price";
-			winston.error(message);
+			cause.winston.error(message);
 			console.log(market);
 			done(new Error(message));
 			return;
 		}
-
-		var output = price;
 		
-		cli.log_price_delta(price, step.data.prev_price, task);
-
-		var flow_decision = tasklib.flow_decision_defaults;
-		tasklib.invoke_children(step, task, output, flow_decision);
+		cause.winston.info( cause.utils.format.price_delta(price, step.data.prev_price, task) );
 
 		step.data.prev_price = price;
-		tasklib.save_task(task);
+		cause.save();
+
+		var output = price;
+		done(null, output, null);
 	});
 }
 
