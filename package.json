@@ -1,6 +1,6 @@
 {
   "name": "cause-bitcoin-rate",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "retrieve bitcoin rates",
   "main": "cause-bitcoin-rate.js",
   "scripts": {},
