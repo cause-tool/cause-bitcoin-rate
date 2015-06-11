@@ -36,18 +36,25 @@ function fn(task, step, input, prev_step, done) {
 		
 		cause.winston.info( cause.utils.format.price_delta(price, step.data.prev_price, task) );
 
-		var decision = (price != step.data.prev_price);
+		var output = price;
+		var decision = didChange(price, step.data.prev_price);
 		step.data.prev_price = price;
 		cause.save();
 
-		var output = price;
 		done(null, output, decision);
 	});
 }
 
 
+function didChange(current, previous) {
+	return (current != previous);
+}
+
+
 module.exports = {
+	didChange: didChange,
 	fn: fn,
+
 	defaults: {
 		options: {
 			exchange: 'EUR',
