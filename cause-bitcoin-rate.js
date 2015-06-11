@@ -36,11 +36,12 @@ function fn(task, step, input, prev_step, done) {
 		
 		cause.winston.info( cause.utils.format.price_delta(price, step.data.prev_price, task) );
 
+		var decision = (price != step.data.prev_price);
 		step.data.prev_price = price;
 		cause.save();
 
 		var output = price;
-		done(null, output, null);
+		done(null, output, decision);
 	});
 }
 
