@@ -16,7 +16,7 @@ function fn(task, step, input, prev_step, done) {
 		cause.utils.scraping.request_defaults()
 	);
 	request(req_opts, function(err, res, body) {
-		if (err) { return cause.handle_error(err); }
+		if (err) { return done(err); }
 
 		if (res.statusCode != 200) {
 			cause.debug('status code: '+res.statusCode, task.name);
