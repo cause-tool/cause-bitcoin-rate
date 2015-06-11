@@ -10,7 +10,7 @@ function fn(task, step, input, prev_step, done) {
 
 	var req_opts = _.defaults(
 		{
-			url: 'https://api.bitcoinaverage.com/exchanges/EUR',
+			url: 'https://api.bitcoinaverage.com/exchanges/'+step.options.exchange,
 			json: true
 		},
 		cause.utils.scraping.request_defaults()
@@ -25,7 +25,7 @@ function fn(task, step, input, prev_step, done) {
 		}
 
 		var market = body[step.options.market];
-		var price = mout.object.get(market, 'rates.last');
+		var price = mout.object.get(market, 'rates.'+step.options.rate);
 		if (!price) {
 			var message = "couldn't retrieve price";
 			cause.winston.error(message);
@@ -49,7 +49,9 @@ module.exports = {
 	fn: fn,
 	defaults: {
 		options: {
-			market: 'bitcoin_de'
+			exchange: 'EUR',
+			market: 'bitcoin_de',
+			rate: 'last'
 		},
 		data: {
 			prev_price: 0
