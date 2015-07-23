@@ -19,9 +19,10 @@ function fn(task, step, input, prev_step, done) {
 		if (err) { return done(err); }
 
 		if (res.statusCode != 200) {
-			cause.debug('status code: '+res.statusCode, task.name);
+			var message = 'status code: '+res.statusCode;
+			cause.debug(message, task.name);
 			cause.debug(req_opts.url);
-			return;
+			return done(new Error(message));
 		}
 
 		var market = body[step.options.market];
@@ -30,8 +31,7 @@ function fn(task, step, input, prev_step, done) {
 			var message = "couldn't retrieve price";
 			cause.winston.error(message);
 			console.log(market);
-			done(new Error(message));
-			return;
+			return done(new Error(message));
 		}
 		
 		cause.winston.info( cause.utils.format.price_delta(price, step.data.prev_price, task) );
@@ -42,6 +42,8 @@ function fn(task, step, input, prev_step, done) {
 		cause.save();
 
 		done(null, output, decision);
+	}).on('error', function(err) {
+		cause.handle_error(err);
 	});
 }
 
