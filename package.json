@@ -1,0 +1,29 @@
+{
+  "name": "cause-bitcoin-rate",
+  "version": "0.0.0",
+  "description": "retrieves the current bitcoin rate from a market",
+  "main": "index.js",
+  "license": "CC-BY-NC-SA-4.0",
+  "scripts": {},
+  "author": "freder.code@gmail.com",
+  "dependencies": {
+    "cause-utils": "*",
+    "lodash": "^4.5.1",
+    "mout": "^0.11.1",
+    "request": "^2.69.0"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/freder/cause-bitcoin-rate.git"
+  },
+  "keywords": [
+    "cause",
+    "cause-block",
+    "bitcoin"
+  ],
+  "bugs": {
+    "url": "https://github.com/freder/cause-bitcoin-rate/issues"
+  },
+  "homepage": "https://github.com/freder/cause-bitcoin-rate"
+}
