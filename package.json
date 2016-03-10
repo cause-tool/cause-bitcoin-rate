@@ -1,6 +1,6 @@
 {
   "name": "cause-bitcoin-rate",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "retrieves the current bitcoin rate from a market",
   "main": "index.js",
   "license": "CC-BY-NC-SA-4.0",
