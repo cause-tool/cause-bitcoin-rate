@@ -3,8 +3,8 @@
 const _ = require('lodash');
 const request = require('request');
 const mout = require('mout');
-const scrapingUtils = require('cause-utils/scraping');
-const formattingUtils = require('cause-utils/formatting');
+const scrapingUtils = require('cause-utils/dist/scraping');
+const formattingUtils = require('cause-utils/dist/formatting');
 
 
 function main(step, context, config, input, done) {
